@@ -1,27 +1,24 @@
 import pygame
-pygame.init() #turn all of pygame on.
-pygame.mixer.pre_init(44100, 16, 2, 4096) #frequency, size, channels, buffersize
-
+pygame.init()
 
 win = pygame.display.set_mode((500,480))
 
 pygame.display.set_caption("First Game")
 
-walkRight = [pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R1.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R2.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R3.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R4.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R5.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R6.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R7.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R8.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R9.png')]
-walkLeft = [pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L1.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L2.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L3.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L4.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L5.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L6.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L7.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L8.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L9.png')]
-bg = pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\\bg.jpg')
-char = pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\standing.png')
+walkRight = [pygame.image.load('R1.png'), pygame.image.load('R2.png'), pygame.image.load('R3.png'), pygame.image.load('R4.png'), pygame.image.load('R5.png'), pygame.image.load('R6.png'), pygame.image.load('R7.png'), pygame.image.load('R8.png'), pygame.image.load('R9.png')]
+walkLeft = [pygame.image.load('L1.png'), pygame.image.load('L2.png'), pygame.image.load('L3.png'), pygame.image.load('L4.png'), pygame.image.load('L5.png'), pygame.image.load('L6.png'), pygame.image.load('L7.png'), pygame.image.load('L8.png'), pygame.image.load('L9.png')]
+bg = pygame.image.load('bg.jpg')
+char = pygame.image.load('standing.png')
 
 clock = pygame.time.Clock()
 
-bulletSound = pygame.mixer.Sound('E:\Müll\Code\Python\PyGame\FirstGame\\files\\bullet.wav')
-hitSound = pygame.mixer.Sound('E:\Müll\Code\Python\PyGame\FirstGame\\files\hit.wav')
+bulletSound = pygame.mixer.Sound('bullet.wav')
+hitSound = pygame.mixer.Sound('hit.wav')
 
-music = pygame.mixer.music.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\music.mp3')
+music = pygame.mixer.music.load('music.mp3')
 pygame.mixer.music.play(-1)
 
 score = 0
-
 
 class player(object):
     def __init__(self,x,y,width,height):
@@ -58,9 +55,7 @@ class player(object):
         #pygame.draw.rect(win, (255,0,0), self.hitbox,2)
 
     def hit(self):
-        self.isJump = False
-        self.jumpCount = 10
-        self.x = 100
+        self.x = 60
         self.y = 410
         self.walkCount = 0
         font1 = pygame.font.SysFont('comicsans', 100)
@@ -68,14 +63,14 @@ class player(object):
         win.blit(text, (250 - (text.get_width()/2),200))
         pygame.display.update()
         i = 0
-        while i < 200:
+        while i < 300:
             pygame.time.delay(10)
             i += 1
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    i = 201
+                    i = 301
                     pygame.quit()
-
+                
 
 
 class projectile(object):
@@ -92,8 +87,8 @@ class projectile(object):
 
 
 class enemy(object):
-    walkRight = [pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R1E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R2E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R3E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R4E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R5E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R6E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R7E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R8E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R9E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R10E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\R11E.png')]
-    walkLeft = [pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L1E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L2E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L3E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L4E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L5E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L6E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L7E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L8E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L9E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L10E.png'), pygame.image.load('E:\Müll\Code\Python\PyGame\FirstGame\\files\L11E.png')]
+    walkRight = [pygame.image.load('R1E.png'), pygame.image.load('R2E.png'), pygame.image.load('R3E.png'), pygame.image.load('R4E.png'), pygame.image.load('R5E.png'), pygame.image.load('R6E.png'), pygame.image.load('R7E.png'), pygame.image.load('R8E.png'), pygame.image.load('R9E.png'), pygame.image.load('R10E.png'), pygame.image.load('R11E.png')]
+    walkLeft = [pygame.image.load('L1E.png'), pygame.image.load('L2E.png'), pygame.image.load('L3E.png'), pygame.image.load('L4E.png'), pygame.image.load('L5E.png'), pygame.image.load('L6E.png'), pygame.image.load('L7E.png'), pygame.image.load('L8E.png'), pygame.image.load('L9E.png'), pygame.image.load('L10E.png'), pygame.image.load('L11E.png')]
 
     def __init__(self, x, y, width, height, end):
         self.x = x
@@ -147,17 +142,17 @@ class enemy(object):
             self.visible = False
         print('hit')
 
-
+        
 
 def redrawGameWindow():
     win.blit(bg, (0,0))
     text = font.render('Score: ' + str(score), 1, (0,0,0))
-    win.blit(text, (350, 10))
+    win.blit(text, (390, 10))
     man.draw(win)
     goblin.draw(win)
     for bullet in bullets:
         bullet.draw(win)
-
+    
     pygame.display.update()
 
 
@@ -171,21 +166,20 @@ run = True
 while run:
     clock.tick(27)
 
-    if goblin.visible == True:
-        if man.hitbox[1] < goblin.hitbox[1] + goblin.hitbox[3] and man.hitbox[1] + man.hitbox[3] > goblin.hitbox[1]:
-            if man.hitbox[0] + man.hitbox[2] > goblin.hitbox[0] and man.hitbox[0] < goblin.hitbox[0] + goblin.hitbox[2]:
-                man.hit()
-                score -= 5
+    if man.hitbox[1] < goblin.hitbox[1] + goblin.hitbox[3] and man.hitbox[1] + man.hitbox[3] > goblin.hitbox[1]:
+        if man.hitbox[0] + man.hitbox[2] > goblin.hitbox[0] and man.hitbox[0] < goblin.hitbox[0] + goblin.hitbox[2]:
+            man.hit()
+            score -= 5
 
     if shootLoop > 0:
         shootLoop += 1
     if shootLoop > 3:
         shootLoop = 0
-
+    
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             run = False
-
+        
     for bullet in bullets:
         if bullet.y - bullet.radius < goblin.hitbox[1] + goblin.hitbox[3] and bullet.y + bullet.radius > goblin.hitbox[1]:
             if bullet.x + bullet.radius > goblin.hitbox[0] and bullet.x - bullet.radius < goblin.hitbox[0] + goblin.hitbox[2]:
@@ -193,7 +187,7 @@ while run:
                 goblin.hit()
                 score += 1
                 bullets.pop(bullets.index(bullet))
-
+                
         if bullet.x < 500 and bullet.x > 0:
             bullet.x += bullet.vel
         else:
@@ -207,7 +201,7 @@ while run:
             facing = -1
         else:
             facing = 1
-
+            
         if len(bullets) < 5:
             bullets.append(projectile(round(man.x + man.width //2), round(man.y + man.height//2), 6, (0,0,0), facing))
 
@@ -226,7 +220,7 @@ while run:
     else:
         man.standing = True
         man.walkCount = 0
-
+        
     if not(man.isJump):
         if keys[pygame.K_UP]:
             man.isJump = True
@@ -243,7 +237,7 @@ while run:
         else:
             man.isJump = False
             man.jumpCount = 10
-
+            
     redrawGameWindow()
 
 pygame.quit()
