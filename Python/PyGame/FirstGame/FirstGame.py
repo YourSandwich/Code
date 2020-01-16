@@ -7,10 +7,10 @@ win = pygame.display.set_mode((500, 480))
 pygame.display.set_caption("First Game")
 
 # This goes outside the while loop, near the top of the program
-walkRight = [pygame.image.load('pics/R1.png'), pygame.image.load('pics/R2.png'), pygame.image.load('pics/R3.png'), pygame.image.load('pics/R4.png'), pygame.image.load('pics/R5.png'), pygame.image.load('pics/R6.png'), pygame.image.load('pics/R7.png'), pygame.image.load('pics/R8.png'), pygame.image.load('pics/R9.png')]
-walkLeft = [pygame.image.load('pics/L1.png'), pygame.image.load('pics/L2.png'), pygame.image.load('pics/L3.png'), pygame.image.load('pics/L4.png'), pygame.image.load('pics/L5.png'), pygame.image.load('pics/L6.png'), pygame.image.load('pics/L7.png'), pygame.image.load('pics/L8.png'), pygame.image.load('pics/L9.png')]
-bg = pygame.image.load('pics/bg.jpg')
-char = pygame.image.load('pics/standing.png')
+walkRight = [pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R1.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R2.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R3.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R4.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R5.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R6.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R7.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R8.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\R9.png')]
+walkLeft = [pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L1.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L2.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L3.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L4.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L5.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L6.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L7.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L8.png'), pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\L9.png')]
+bg = pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\\bg.jpg')
+char = pygame.image.load('D:\Müll\Code\Python\PyGame\FirstGame\pics\standing.png')
 
 clock = pygame.time.Clock()
 
