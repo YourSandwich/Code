@@ -26,3 +26,10 @@ print(Ami + "+" + Norbert)
 # Multipliziert den String
 lotsofhellos = "hello" * 10
 print(lotsofhellos)
+
+###
+x = "Python is "
+y = "awesome"
+z =  x + y
+print(z)
+###
