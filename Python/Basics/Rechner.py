@@ -41,7 +41,7 @@ if __name__ == "__main__":
 	zusammen = StringVar() 
 
 
-	inhalt_feld = Entry(Fenster, textvariable=zusammen,) 
+	inhalt_feld = Entry(Fenster, textvariable=zusammen) 
 	inhalt_feld.grid(columnspan=4, ipadx=70, ipady=10) 
 
 	zusammen.set('Hier tippen') 
