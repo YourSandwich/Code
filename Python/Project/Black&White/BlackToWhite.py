@@ -1,4 +1,7 @@
 from tkinter import *
+from tkinter import filedialog ##ermöglicht die abfrage von daten
+from PIL import Image  
+import PIL  
 
 ## Definiert die Funktion
 def black_white():
@@ -12,10 +15,17 @@ def black_white():
             else:
                  image.put("white",(x,y))
 
+
 Fenster = Tk() ## benutzt das modul von Tkinter das für die gui zuständig ist und setzt die Funktion ins Fenster
-image = PhotoImage(file="D:\Müll\Code\Python\Project\Black&White\giphy.gif") ## Die Variable image bekommt die Funktion PhotoImage die Gif lesen kann. 
+Fenster.title("Black&White")
+Fenster.minsize(200,50)
+image = PhotoImage(file=filedialog.askopenfilenames()) ## Die Variable image bekommt die Funktion PhotoImage die Gif lesen kann. 
 btn_BW = Button(master=Fenster, command=black_white, text="Change") ## Hier wird ein Button erstellt der die funktion black_white ausführt
+btn_Open = Button(master=Fenster, command=filedialog.askopenfilenames, text="Open")
+btn_save = Button(master=Fenster, command=filedialog.asksaveasfile, text="Save")
 label_image = Label(master=Fenster, image=image) ##  Es wird ein Label erstellt der zum Fenster gehört und das bild der variable bild hat.
 label_image.pack() ## der Label wird angezeigt
+btn_Open.pack(fill=X)
 btn_BW.pack(fill=X) ## Der Knopf wird angezeigt.
+btn_save.pack(fill=X)
 Fenster.mainloop()   
