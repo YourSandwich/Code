@@ -4,10 +4,10 @@ from random import randint
 
 fenster = Tk()
 fenster.title("Würfel")
-fenster.iconbitmap('@/mnt/DEDC8D3CDC8D1047/Müll/Code/Python/Project/Würfel/calculator.xbm')
-fenster.geometry("210x180+800+350")
-fenster.minsize(220, 180)
-fenster.maxsize(220, 180)
+fenster.iconbitmap('D:\Müll\Code\Python\Project\Würfel\calculator.ico')
+fenster.geometry("180x180+800+350")
+fenster.minsize(180, 180)
+fenster.maxsize(180, 180)
 
 def Zufall():
     zufallszahl = randint(text.get(), text2.get())
