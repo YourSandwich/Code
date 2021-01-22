@@ -4,10 +4,10 @@ from random import randint
 
 fenster = Tk()
 fenster.title("Würfel")
-fenster.iconbitmap('@/home/sandwich/Schreibtisch/Müll/Code/Python/Project/Würfel/calculator.xbm')
-fenster.geometry("210x180+800+350")
-fenster.minsize(210, 180)
-fenster.maxsize(210, 180)
+fenster.geometry("90x180+800+350")
+fenster.minsize(190, 160)
+fenster.resizable(True, True)
+
 
 def Zufall():
     zufallszahl = randint(text.get(), text2.get())
@@ -17,24 +17,21 @@ def Zufall():
 text = IntVar()
 text2 = IntVar()
 
-platz= Label(fenster)
-platz.grid(row=0)
-
-lab = Label(fenster, font=("Arial",50), text="?", width = 3)
-lab.grid(row=1, column=1)
+lab = Label(fenster, font=("Arial", 50), text="?", width=3)
+lab.grid(row=0, column=1)
 
 
 von = Entry(fenster, textvariable=text)
-von.grid(row=2, column=1)
+von.grid(row=1, column=1)
 
 bis = Entry(fenster, textvariable=text2)
-bis.grid(row=3, column=1)
+bis.grid(row=2, column=1)
 
-Label(fenster, text="von").grid(row=2)
-Label(fenster, text="bis").grid(row=3)
+Label(fenster, text="von").grid(row=1)
+Label(fenster, text="bis").grid(row=2)
 
 
-knopf = Button(fenster, text = "Drück mich!" , command=Zufall)
-knopf.grid(row=4, column=1)
+knopf = Button(fenster, text="Drück mich!", command=Zufall)
+knopf.grid(row=3, column=1)
 
 fenster.mainloop()

@@ -12,11 +12,11 @@ print(three)
 hello = "hello"
 world = "world"
 helloworld = hello + " " + world
-# "\n" ist ein paragraph
-print("\n"+helloworld)
+# "/n" ist ein paragraph
+print("/n"+helloworld)
 
 a, b = 3, 4
-print(a,b)
+print(a, b)
 
 # oder
 
@@ -30,6 +30,6 @@ print(lotsofhellos)
 ###
 x = "Python is "
 y = "awesome"
-z =  x + y
+z = x + y
 print(z)
 ###
