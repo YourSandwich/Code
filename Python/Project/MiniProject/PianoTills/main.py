@@ -1,5 +1,4 @@
 import pyautogui
-import mouse
 from mss import mss
 
 start_x = 2560
@@ -18,9 +17,7 @@ def start():
             img = sct.grab(bbox)
             for cordx in cords_x:
                 if img.pixel(cordx, cordy)[0] <= 23:
-                    mouse.move(start_x + cordx, start_y + cordy, absolute=True,
-                               duration=0)
-                    pyautogui.click()
+                    pyautogui.click(start_x + cordx, start_y + cordy)
                     break
             if t == 4:
                 cordy += 200

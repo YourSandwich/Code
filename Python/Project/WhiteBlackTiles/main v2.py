@@ -1,27 +1,27 @@
-from pyautogui import *
 import pyautogui
-import time
 import keyboard
-import random
+import mouse
+from mss import mss
+
+start_x = 2560
+start_y = 240
+
+bbox = (start_x, start_y, start_x + 637, start_y + 637)
 
 
-time.sleep(2)
+def start():
+    with mss() as sct:
+        while keyboard.is_pressed('q') == False:
+            while True:
+                img = sct.grab(bbox)
+                width, height = img.size
+                for x in range(0, width, 20):
+                    for y in range(0, height, 20):
+                        if img.pixel(x, y)[0] == 20:
+                            mouse.move(x + start_x, y + start_y, absolute=True,
+                                       duration=0)
+                            pyautogui.click()
+                            break
 
-# Color of center: (255, 219, 195)
 
-
-while keyboard.is_pressed('q') == False:
-
-    pic = pyautogui.screenshot(region=(2560, 240, 637, 637))
-
-    width, height = pic.size
-
-    for x in range(0, width, 5):
-        for y in range(0, height, 5):
-
-            r, g, b = pic.getpixel((x, y))
-            yes = r + g + b
-            if (b in range(0, 20)):
-                pyautogui.click(x+2560, y+240)
-                time.sleep(0.3)
-                break
+start()
