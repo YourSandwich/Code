@@ -1,12 +1,10 @@
 import pygame
 import sys
 import random
+import re
 from pygame.math import Vector2
 
-# TODO: Fix Graphics
-#TODO: Implement
-#TODO: HighscoreImplement
-# TODO: menu for Retry and Quit
+# TODO: Implement menu for Retry and Quit
 
 
 class SNAKE:
@@ -17,39 +15,39 @@ class SNAKE:
 
         # Textures
         self.head_up = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/head.png').convert_alpha()
+            'Texture/head.png').convert_alpha()
         self.head_down = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/headD.png').convert_alpha()
+            'Texture/headD.png').convert_alpha()
         self.head_left = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/headL.png').convert_alpha()
+            'Texture/headL.png').convert_alpha()
         self.head_right = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/headR.png').convert_alpha()
+            'Texture/headR.png').convert_alpha()
 
         self.tail_up = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/tailU.png').convert_alpha()
+            'Texture/tailU.png').convert_alpha()
         self.tail_down = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/tailD.png').convert_alpha()
+            'Texture/tailD.png').convert_alpha()
         self.tail_left = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/tailL.png').convert_alpha()
+            'Texture/tailL.png').convert_alpha()
         self.tail_right = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/tailR.png').convert_alpha()
+            'Texture/tailR.png').convert_alpha()
 
-        self.bend_up = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/bendU.png').convert_alpha()
-        self.bend_down = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/bendD.png').convert_alpha()
-        self.bend_left = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/bendL.png').convert_alpha()
         self.bend_right = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/bendR.png').convert_alpha()
+            'Texture/bendR.png').convert_alpha()  # right
+        self.bend_left = pygame.image.load(
+            'Texture/bendL.png').convert_alpha()  # right
+        self.bend_up = pygame.image.load(
+            'Texture/bendU.png').convert_alpha()  # dont show up
+        self.bend_down = pygame.image.load(
+            'Texture/bendD.png').convert_alpha()  # right
 
         self.body_vertical = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/body.png').convert_alpha()
+            'Texture/body.png').convert_alpha()
         self.body_horizontal = pygame.image.load(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/bodyH.png').convert_alpha()
+            'Texture/bodyH.png').convert_alpha()
 
         self.crunch_sound = pygame.mixer.Sound(
-            '/mnt/Data/Müll/Code/Python/PyGame/Snake/Audio/crunch.wav')
+            'Audio/crunch.wav')
 
     def draw_snake(self):
         self.update_head_graphics()
@@ -74,13 +72,13 @@ class SNAKE:
                     display.blit(self.body_horizontal, block_rect)
                 else:
                     if previous_block.x == 1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == 1:
-                        display.blit(self.bend_up, block_rect)
-                    if previous_block.x == -1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == -1:
-                        display.blit(self.bend_down, block_rect)
+                        display.blit(self.bend_right, block_rect)
                     if previous_block.x == -1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == -1:
                         display.blit(self.bend_left, block_rect)
+                    if previous_block.x == -1 and next_block.y == -1 or previous_block.y == -1 and next_block.x == -1:
+                        display.blit(self.bend_up, block_rect)
                     if previous_block.x == 1 and next_block.y == 1 or previous_block.y == 1 and next_block.x == 1:
-                        display.blit(self.bend_right, block_rect)
+                        display.blit(self.bend_down, block_rect)
 
     def update_head_graphics(self):
         head_relation = self.body[1] - self.body[0]
@@ -205,23 +203,45 @@ class MAIN:
                         pygame.draw.rect(display, grass_color, grass_rect)
 
     def draw_score(self):
-        score_text = str(len(self.snake.body) - 3)
-        score_surface = game_font.render(score_text, True, (54, 74, 12))
-        score_x = int(cell_size * cell_number - 60)
-        score_y = int(cell_size*cell_number - 40)
-        score_rect = score_surface.get_rect(center=(score_x, score_y))
-        cherry_rect = cherry.get_rect(
-            midright=(score_rect.left, score_rect.centery))
-        bg_rect = pygame.Rect(cherry_rect.left-6, cherry_rect.top-6,
-                              cherry_rect.width + 6 + score_rect.width + 6, cherry_rect.height+12)
+        with open('highscore.txt', mode='r+', encoding='UTF-8', errors='strict')as file:
+            global score_text
+            score_text = str(len(self.snake.body) - 3)
+            score_surface = game_font.render(score_text, True, (54, 74, 12))
+            score_x = int(cell_size * cell_number - 60)
+            score_y = int(cell_size*cell_number - 40)
+            score_rect = score_surface.get_rect(center=(score_x, score_y))
+            cherry_rect = cherry.get_rect(
+                midright=(score_rect.left, score_rect.centery))
+            bg_rect = pygame.Rect(cherry_rect.left-6, cherry_rect.top-6,
+                                  cherry_rect.width + 6 + score_rect.width + 6, cherry_rect.height+12)
 
-        pygame.draw.rect(display, (167, 209, 61), bg_rect)
-        display.blit(score_surface, score_rect)
-        display.blit(cherry, cherry_rect)
-        pygame.draw.rect(display, (54, 74, 12), bg_rect, 2)
+            pygame.draw.rect(display, (167, 209, 61), bg_rect)
+            display.blit(score_surface, score_rect)
+            display.blit(cherry, cherry_rect)
+            pygame.draw.rect(display, (54, 74, 12), bg_rect, 2)
+        # Highscore
+            hscore_text = "highscore: " + str(file.readlines()).strip("'[]'")
+            hscore_surface = game_font.render(hscore_text, True, (34, 54, 12))
+            hscore_x = int(cell_size * cell_number-cell_number*cell_size + 40)
+            hscore_y = int(cell_number*cell_size-cell_number*cell_size + 60)
+            hscore_rect = hscore_surface.get_rect(
+                center=(hscore_x + 75, hscore_y))
+            h_rect = pygame.Rect(hscore_rect.left-6, hscore_rect.top-6,
+                                 hscore_rect.width + 12, hscore_rect.height+12)
+            pygame.draw.rect(display, (0, 0, 0), h_rect, 2)
+            display.blit(hscore_surface, hscore_rect)
 
     def game_over(self):
+        save()
         self.snake.reset()
+
+
+def save():
+    with open('highscore.txt', mode='r') as file:
+        data = file.read()
+    if int(score_text) >= int(data):
+        with open('highscore.txt', mode='r+')as file:
+            file.write(score_text)
 
 
 pygame.mixer.pre_init(44100, -16, 2, 512)
@@ -233,9 +253,9 @@ display = pygame.display.set_mode(
     (cell_number * cell_size, cell_number * cell_size))
 clock = pygame.time.Clock()  # Set the speed of the Game
 cherry = pygame.image.load(
-    '/mnt/Data/Müll/Code/Python/PyGame/Snake/Texture/cherry2.png').convert_alpha()
+    'Texture/cherry2.png').convert_alpha()
 game_font = pygame.font.Font(
-    '/mnt/Data/Müll/Code/Python/Assets/Fonts/PinkChicken-Regular.ttf', 31)
+    '/home/sandwich/Müll/Code/Python/Assets/Fonts/PinkChicken-Regular.ttf', 31)
 
 DISPLAY_UPDATE = pygame.USEREVENT
 pygame.time.set_timer(DISPLAY_UPDATE,  150)
@@ -265,8 +285,7 @@ while True:
             if event.key == pygame.K_RIGHT:
                 if main_game.snake.direction.x != -1:
                     main_game.snake.direction = Vector2(1, 0)
-
     display.fill((98, 184, 8))
     main_game.draw_elements()
     pygame.display.update()
-    clock.tick(60)
+    clock.tick(240)
