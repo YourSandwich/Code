@@ -1,5 +1,5 @@
-from PySide2.QtWidgets import QApplication,QWidget,QPushButton,QMessageBox
-from PySide2.QtGui import QIcon
+from PySide2.QtWidgets import *
+from PySide2.QtGui import *
 import sys
 
 class Window(QWidget):
@@ -9,18 +9,26 @@ class Window(QWidget):
         self.setWindowTitle("KernelChan")
         self.setGeometry(300,300,300,300)
 
+        self.center()
         self.setIcon()
-        self.setButton()
+        self.setButton("Install",100,240,None)
+        self.setButton("Exit",190,240,self.exitApp)
+
+    def center(self):
+        qRect = self.frameGeometry()
+        centerPoint = QDesktopWidget().availableGeometry().center()
+        qRect.moveCenter(centerPoint)
+        self.move(qRect.topLeft())
 
     def setIcon(self):
         appIcon = QIcon('icon.png')
         self.setWindowIcon(appIcon)
 
-    def setButton(self):
-        button = QPushButton("Exit", self)
-        button.move(190,240)
+    def setButton(self, name, x, y,function):
+        button = QPushButton(name, self)
+        button.move(x,y)
 
-        button.clicked.connect(self.exitApp)
+        button.clicked.connect(function)
 
     def exitApp(self):
         askUser = QMessageBox.question(self, "Quit", "Are you Sure?", QMessageBox.Yes | QMessageBox.No)
