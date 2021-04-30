@@ -1,18 +1,24 @@
 from PySide2.QtWidgets import *
 from PySide2.QtGui import *
-import sys
+from PySide2.QtCore import *
+from getKernelInfo import *
+import sys,os
+
+Items = []
+#Items.append(KernelVer)
 
 class Window(QWidget):
     def __init__(self):
         super().__init__()
 
         self.setWindowTitle("KernelChan")
-        self.setGeometry(300,300,300,300)
+        self.setFixedSize(600,600)
 
         self.center()
         self.setIcon()
-        self.setButton("Install",100,240,None)
-        self.setButton("Exit",190,240,self.exitApp)
+        List.setList(self,25,20)
+        Button.setButton(self,"Install",400,540,self.installKernel)
+        Button.setButton(self,"Exit",490,540,self.exitApp)
 
     def center(self):
         qRect = self.frameGeometry()
@@ -24,11 +30,9 @@ class Window(QWidget):
         appIcon = QIcon('icon.png')
         self.setWindowIcon(appIcon)
 
-    def setButton(self, name, x, y,function):
-        button = QPushButton(name, self)
-        button.move(x,y)
 
-        button.clicked.connect(function)
+    def installKernel(self):
+        pass
 
     def exitApp(self):
         askUser = QMessageBox.question(self, "Quit", "Are you Sure?", QMessageBox.Yes | QMessageBox.No)
@@ -37,6 +41,22 @@ class Window(QWidget):
             App.quit()
         elif askUser == QMessageBox.No:
             pass
+
+class Button(QPushButton):
+    def setButton(self, name, x, y,function):
+        button = QPushButton(name,self)
+        button.move(x,y)
+
+        button.clicked.connect(function)
+
+class List(QListWidget):
+        def setList(self,x,y):
+            self.aList = QListWidget(self)
+            self.aList.resize(550,500)
+            self.aList.move(x,y)
+
+            for i in KernelVerList:
+                QListWidgetItem(i, self.aList)
 
 App = QApplication(sys.argv)
 window = Window()
