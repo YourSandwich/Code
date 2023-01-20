@@ -1,0 +1,281 @@
+---
+- name:
+  hosts: vm
+  vars:
+     install_drive: /dev/nvme0n1
+     boot_partition_suffix: 'p1'
+     main_partition_suffix: 'p2'
+
+  tasks:
+    - name: Abort if the host is not booted from the Arch install media
+      fail:
+        msg: "This host is not booted from the Arch install media!"
+      when: ansible_nodename != 'archiso'
+      tags:
+        - quick_exit
+    - name: Set Keyboard layout
+      command: loadkeys de-latin1-nodeadkeys
+    - name: Synchronize clock via NTP
+      command: timedatectl set-ntp true
+      tags:
+        - sync_clock
+    - name: Repartition install drive
+      block:
+        - name: Wipe install drive and all its partitions
+          command: find /dev -wholename "{{ install_drive }}*" -exec wipefs --force --all {} \;
+          tags:
+            - wipefs
+        - name: Create boot partition
+          parted:
+            device: '{{ install_drive }}'
+            label: gpt
+            number: 1
+            part_end: 256MB
+            name: boot
+            flags: [boot, esp]
+            state: present
+        - name: Create root partition
+          parted:
+            device: '{{ install_drive }}'
+            label: gpt
+            number: 2
+            part_start: 256MB
+            name: main
+            state: present
+      tags:
+        - repartition
+    - name: Create filesystems
+      block:
+        - name: Create FAT32 filesystem in boot partition
+          filesystem:
+            dev: '{{ install_drive }}{{ boot_partition_suffix }}'
+            fstype: vfat
+            opts: -F32
+            force: yes
+        - name: Create btrfs filesystem in main volume
+          filesystem:
+            dev: '{{ install_drive }}{{ main_partition_suffix }}'
+            fstype: btrfs
+            force: yes
+        - name: Get UUID for boot filesystem
+          command: blkid -s UUID -o value '{{ install_drive }}{{ boot_partition_suffix }}'
+          register: boot_uuid
+          changed_when: false
+        - name: Get UUID for main filesystem
+          command: blkid -s UUID -o value '{{ install_drive }}{{ main_partition_suffix }}'
+          register: main_uuid
+          changed_when: false
+      tags:
+        - create_filesystems
+
+
+    - name: Prepare BTRFS Subvolume
+      mount:
+          path: /mnt
+          src: UUID={{ main_uuid.stdout }}
+          fstype: btrfs
+          opts: rw,relatime,compress=zstd,ssd,space_cache=v2,discard=async
+          state: mounted
+
+    - name: Make root subvolumes
+      command: btrfs su cr /mnt/@
+    - name: Make home subvolumes
+      command: btrfs su cr /mnt/@home
+
+    - name: Unmount Partition
+      mount:
+        path: /mnt
+        src: UUID={{ main_uuid.stdout }}
+        fstype: btrfs
+        state: unmounted
+
+    - name: Mount filesystems
+      block:
+        - name: Mount main filesystem
+          mount:
+            path: /mnt
+            src: UUID={{ main_uuid.stdout }}
+            fstype: btrfs
+            opts: rw,relatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@
+            state: mounted
+
+        - name: Create mountpoint for home volume
+          file:
+            path: /mnt/home
+            state: directory
+        - name: Create mountpoint for boot volume
+          file:
+            path: /mnt/boot
+            state: directory
+
+        - name: Mount home filesystem
+          mount:
+            path: /mnt/home
+            src: UUID={{ main_uuid.stdout }}
+            fstype: btrfs
+            opts: rw,relatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@home
+            state: mounted
+
+        - name: Mount boot filesystem
+          mount:
+            path: /mnt/boot
+            src: UUID={{ boot_uuid.stdout }}
+            fstype: vfat
+            state: mounted
+      tags:
+        - mount_filesystems
+
+    - name: Refresh Pacman
+      pacman:
+        update_cache: yes
+
+    - name: Run pacstrap
+      command: pacstrap /mnt base base-devel efibootmgr grub linux linux-headers linux-firmware openssh python reflector sudo vim htop neofetch networkmanager fish btrfs-progs lvm2 git
+      tags:
+        - pacstrap
+    - name: Restrict reflector to only AT mirrors
+      ansible.builtin.lineinfile:
+        insertafter: \# --country
+        line: --country "Austria"
+        path: /mnt/etc/xdg/reflector/reflector.conf
+      tags:
+        - mirrors
+    - name: Generate fstab
+      block:
+        - name: Generate blank fstab
+          command: genfstab -LU /mnt >> /mnt/etc/fstab
+        - name: Add root subvolume to fstab
+          mount:
+            fstab: /mnt/etc/fstab
+            path: /
+            src: UUID={{ main_uuid.stdout }}
+            fstype: btrfs
+            opts: rw,relatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@
+            passno: '1'
+            state: present
+        - name: Add home subvolume to fstab
+          mount:
+            fstab: /mnt/etc/fstab
+            path: /home
+            src: UUID={{ main_uuid.stdout }}
+            fstype: btrfs
+            opts: rw,relatime,compress=zstd,ssd,space_cache=v2,discard=async,subvol=@home
+            passno: '2'
+            state: present
+        - name: Add boot volume to fstab
+          mount:
+            fstab: /mnt/etc/fstab
+            path: /boot
+            src: UUID={{ boot_uuid.stdout }}
+            fstype: vfat
+            opts: defaults
+            passno: '3'
+            state: present
+      tags:
+        - fstab
+
+    - name: Set local timezone
+      command: '{{ item }}'
+      with_items:
+        - arch-chroot /mnt ln -sf /usr/share/zoneinfo/Europe/Vienna /etc/localtime
+        - arch-chroot /mnt timedatectl set-timezone Europe/Vienna
+      tags:
+        - timezone
+
+    - name: Generate adjtime file
+      command: arch-chroot /mnt hwclock --systohc
+      tags:
+        - adjtime
+
+    - name: Setup locales
+      block:
+        - name: Install Chaotic-Aur
+          command: '{{ item }}'
+          with_items:
+          - arch-chroot /mnt pacman-key --recv-key FBA220DFC880C036 --keyserver keyserver.ubuntu.com
+          - arch-chroot /mnt pacman-key --lsign-key FBA220DFC880C036
+          - arch-chroot /mnt pacman -U 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-keyring.pkg.tar.zst' 'https://cdn-mirror.chaotic.cx/chaotic-aur/chaotic-mirrorlist.pkg.tar.zst' --noconfirm
+        - name: Pacman Config
+          copy:
+            src: ../files/pacman.conf
+            dest: /mnt/etc/
+        - name: Pacman cache refresh
+          command: arch-chroot /mnt pacman -Sy
+        - name: Configure locale.gen
+          lineinfile:
+            dest: /mnt/etc/locale.gen
+            regexp: '{{ item.regex }}'
+            line: '{{ item.line }}'
+          loop:
+            - {regex: en_US\.UTF-8 UTF-8, line: en_US.UTF-8 UTF-8}
+        - name: Create vconsole.conf
+          copy:
+            content: "KEYMAP=de-latin1-nodeadkeys"
+            dest: /mnt/etc/vconsole.conf
+        - name: Create locale.conf
+          copy:
+            content: "LANG=en_US.UTF-8"
+            dest: /mnt/etc/locale.conf
+        - name: Generate locales
+          command: arch-chroot /mnt locale-gen
+        - name: SSH permit Password
+          replace:
+            path: /mnt/etc/ssh/sshd_config
+            regexp: '#PasswordAuthentication yes'
+            replace: 'PasswordAuthentication yes'
+      tags:
+        - locales
+
+    - name: Set hostname
+      copy:
+        content: '{{ hostname }}'
+        dest: /mnt/etc/hostname
+      tags:
+        - hostname
+    - name: Enable sshd
+      command: arch-chroot /mnt systemctl enable sshd
+      tags:
+        - sshd
+    - name: Enable networkmanager
+      command: arch-chroot /mnt systemctl enable NetworkManager
+    - name: Set up initramfs
+      block:
+        # - name: Add mkinitcpio.conf hooks
+        #   lineinfile:
+        #     dest: /mnt/etc/mkinitcpio.conf
+        #     regexp: ^HOOKS=
+        #     line: HOOKS=(base udev autodetect keyboard keymap modconf block encrypt lvm2 filesystems fsck)
+        - name: Create new initramfs
+          command: arch-chroot /mnt mkinitcpio -p linux
+      tags:
+        - initramfs
+        - mkinitcpio
+    - name: Set up grub
+      block:
+        - name: Add commandline information to grub config
+          lineinfile:
+            dest: /mnt/etc/default/grub
+            regexp: ^GRUB_CMDLINE_LINUX_DEFAULT=
+            line: 'GRUB_CMDLINE_LINUX_DEFAULT="loglevel=3"'
+        - name: Install grub
+          command: arch-chroot /mnt grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=Arch
+        - name: Create grub config
+          command: arch-chroot /mnt grub-mkconfig -o /boot/grub/grub.cfg
+      tags:
+        - grub
+    - name: Setup user account
+      block:
+        - name: Create user account
+          command: '{{item}}'
+          with_items:
+          - arch-chroot /mnt useradd --create-home --user-group --groups wheel {{ user_name }} --password {{ user_password }} --shell /bin/fish
+          - arch-chroot /mnt usermod --password '{{ root_password }}' root --shell /bin/fish
+      tags:
+        - user_account
+    - name: Give sudo access to wheel group
+      copy:
+        content: '%wheel ALL=(ALL) ALL'
+        dest: /mnt/etc/sudoers.d/wheel
+        validate: /usr/sbin/visudo --check --file=%s
+      tags:
+        - sudo

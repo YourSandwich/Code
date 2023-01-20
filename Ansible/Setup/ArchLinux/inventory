@@ -1,0 +1,8 @@
+all:
+  children:
+    vm:
+      hosts:
+        192.168.122.197:
+      vars:
+        ansible_user: root
+        ansible_password: " "

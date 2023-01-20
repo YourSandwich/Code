@@ -1,0 +1,4 @@
+---
+base_packages: linux,linux-headers,linux-firmware,base,base-devel,git,vim,neofetch,htop,fish,openssh,lvm2,btrfs-progs
+
+kde_packages: adobe-source-han-sans-otc-fonts,adobe-source-han-serif-otc-fonts,ttf-dejavu,ttf-opensans,kaccounts-integration,bluedevil,breeze,breeze-gtk,kde-cli-tools,kde-gtk-config,kdeplasma-addons,kgamma5,khotkeys,kinfocenter,kscreen,ksystemstats,kwayland-integration,plasma-browser-integration,plasma-desktop,plasma-disks,plasma-integration,plasma-nm,plasma-pa,plasma-systemmonitor,plasma-workspace,plasma-workspace-wallpapers,polkit-kde-agent,powerdevil,sddm-kcm,systemsettings,xdg-desktop-portal-kde,pipewire,pipewire-alsa,pipewire-jack,pipewire-pulse,pipewire-v4l2,pipewire-zeroconf,phonon-qt5-vlc,dolphin,dolphin-plugins,konsole,okular,power-profiles-daemon,gwenview,helvum,zerotier-one,nmap,spectacle,ark,p7zip,unrar,lzop,lrzip,vlc

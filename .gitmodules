@@ -1,0 +1,3 @@
+[submodule "Rust/Rust/Basics/rustling"]
+	path = Rust/Rust/Basics/rustling
+	url = https://github.com/rust-lang/rustlings.git

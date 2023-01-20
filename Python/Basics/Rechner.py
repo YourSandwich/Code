@@ -1,9 +1,9 @@
 #!/usr/bin/python3
 from tkinter import *
 
-inhalt = "" 
+inhalt = ""
 
-def drucken(num): 
+def drucken(num):
 
 	global inhalt 
 	inhalt = inhalt + str(num) 
@@ -34,9 +34,9 @@ if __name__ == "__main__":
 	Fenster = Tk() 
 	Fenster.configure(background="#ababab")
 	Fenster.title("Mein kleiner Taschenrechner") 
-	Fenster.geometry("265x245") 
-	Fenster.minsize(265, 245)
-	Fenster.maxsize(265, 245)
+	Fenster.geometry("365x365")
+	Fenster.minsize(365, 365)
+	Fenster.maxsize(365, 365)
 
 	zusammen = StringVar() 
 
@@ -128,4 +128,4 @@ if __name__ == "__main__":
 	CE.grid(row=3, column=0)
 
     
-	Fenster.mainloop() 
+	Fenster.mainloop()

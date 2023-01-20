@@ -1,0 +1,8 @@
+---
+  - name: Full system Update
+    hosts: arch
+    tasks:
+      - name: Pacman update (pacamn -Syu)
+        pacman:
+          update_cache: yes
+          upgrade: yes

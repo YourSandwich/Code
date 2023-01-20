@@ -1,0 +1,22 @@
+---
+  - name: KDE Plasma Setup
+    hosts: vm
+    vars_files:
+      - arch_packages.yml
+    tasks:
+      - name: Installing Plasma Packages
+        pacman:
+          name: '{{ kde_packages }}'
+          state: latest
+
+      - name: Enable and start sddm service
+        service:
+          name: sddm
+          state: started
+          enabled: yes
+
+      - name: Enable and start power-profiles-daemon
+        service:
+          name: power-profiles-daemon
+          state: started
+          enabled: yes
