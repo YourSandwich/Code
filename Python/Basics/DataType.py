@@ -52,7 +52,7 @@ a = float(x)
 b = int(y)
 
 #convert from int to complex:
-c = complex(x)
+c = complex(z)
 
 print(a)
 print(b)
