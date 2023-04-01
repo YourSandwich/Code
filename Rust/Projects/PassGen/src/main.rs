@@ -46,20 +46,14 @@ fn main() {
     let mut uppercase = false;
     let mut special = false;
     let mut numeric = false;
-    if args.len() == 1 {
-        length = 12;
-        lowercase = true;
-        uppercase = true;
-        special = true;
-        numeric = true;
-    } else if args.len() == 2 && args[1] != "-h" {
+
+    if args.len() == 2 && args[1].chars().all(|c| c.is_digit(10)) {
         length = args[1].parse().unwrap_or(12);
         lowercase = true;
         uppercase = true;
         special = true;
         numeric = true;
-    } 
-    else {
+    } else {
         for arg in &args[1..] {
             if arg.starts_with('-') {
                 for c in arg.chars().skip(1) {
@@ -79,11 +73,20 @@ fn main() {
                         }
                     }
                 }
-            } else {
-                length = arg.parse().unwrap_or(12);
+            }
+            else {
+                match arg.parse() {
+                    Ok(val) => length = val,
+                    Err(_) => {
+                        println!("Error: Invalid length argument: {}", arg);
+                        println!("Run 'passgen -h' for help.");
+                        return;
+                    }
+                }
             }
         }
     }
+
     let password = generate_password(length, lowercase, uppercase, special, numeric);
     println!("{}", password);
 }
