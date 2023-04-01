@@ -52,7 +52,7 @@ fn main() {
         uppercase = true;
         special = true;
         numeric = true;
-    } else if args.len() == 2 {
+    } else if args.len() == 2 && args[1] != "-h" {
         length = args[1].parse().unwrap_or(12);
         lowercase = true;
         uppercase = true;
@@ -74,6 +74,7 @@ fn main() {
                         },
                         _ => {
                             println!("Error: Invalid option: {}", c);
+                            println!("Run 'passgen -h' for help.");
                             return;
                         }
                     }
