@@ -47,7 +47,12 @@ fn main() {
     let mut special = false;
     let mut numeric = false;
 
-    if args.len() == 2 && args[1].chars().all(|c| c.is_digit(10)) {
+    if args.len() == 1 {
+        lowercase = true;
+        uppercase = true;
+        special = true;
+        numeric = true;
+    } else if args.len() == 2 && args[1].chars().all(|c| c.is_digit(10)) {
         length = args[1].parse().unwrap_or(12);
         lowercase = true;
         uppercase = true;
