@@ -39,10 +39,10 @@ fn main() {
     let matches = App::new("pass2gen")
         .about("Generate a random password")
         .arg(Arg::with_name("length").help("Sets the length of the password").default_value("12").index(1))
-        .arg(Arg::with_name("lowercase").short("l").help("Include lowercase letters"))
-        .arg(Arg::with_name("uppercase").short("u").help("Include uppercase letters"))
-        .arg(Arg::with_name("special").short("s").help("Include special characters"))
-        .arg(Arg::with_name("numeric").short("n").help("Include numbers"))
+        .arg(Arg::with_name("lowercase").short("l").long("lowercase").help("Include lowercase letters"))
+        .arg(Arg::with_name("uppercase").short("u").long("uppercase").help("Include uppercase letters"))
+        .arg(Arg::with_name("special").short("s").long("special").help("Include special characters"))
+        .arg(Arg::with_name("numeric").short("n").long("numeric").help("Include numbers"))
         .setting(clap::AppSettings::DisableVersion)
         .get_matches();
 
