@@ -1,0 +1,13 @@
+/mnt/Data/Müll/Code/Rust/Projects/Pass2Gen/target/debug/deps/ansi_term-8e31ee773be4ea75.rmeta: /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/lib.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/ansi.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/style.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/difference.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/display.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/write.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/windows.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/util.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/debug.rs
+
+/mnt/Data/Müll/Code/Rust/Projects/Pass2Gen/target/debug/deps/ansi_term-8e31ee773be4ea75.d: /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/lib.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/ansi.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/style.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/difference.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/display.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/write.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/windows.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/util.rs /home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/debug.rs
+
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/lib.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/ansi.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/style.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/difference.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/display.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/write.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/windows.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/util.rs:
+/home/sandwich/.cargo/registry/src/github.com-1ecc6299db9ec823/ansi_term-0.12.1/src/debug.rs:
