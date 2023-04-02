@@ -8,3 +8,7 @@ edition = "2021"
 [dependencies]
 clap = "2.33.3"
 rand = "0.8.5"
+
+[profile.release]
+opt-level = 3
+strip = true
