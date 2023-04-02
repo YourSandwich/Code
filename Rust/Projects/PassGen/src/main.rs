@@ -72,8 +72,8 @@ fn main() {
                             return;
                         },
                         _ => {
-                            println!("Error: Invalid option: {}", c);
-                            println!("Run 'passgen -h' for help.");
+                            eprintln!("Error: Invalid option: {}", c);
+                            eprintln!("Run 'passgen -h' for help.");
                             return;
                         }
                     }
@@ -83,8 +83,8 @@ fn main() {
                 match arg.parse() {
                     Ok(val) => length = val,
                     Err(_) => {
-                        println!("Error: Invalid length argument: {}", arg);
-                        println!("Run 'passgen -h' for help.");
+                        eprintln!("Error: Invalid length argument: {}", arg);
+                        eprintln!("Run 'passgen -h' for help.");
                         return;
                     }
                 }
